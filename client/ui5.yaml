@@ -1,0 +1,9 @@
+specVersion: "3.2"
+metadata:
+  name: client
+type: application
+framework:
+  name: SAPUI5
+  version: "1.122.2"
+
+

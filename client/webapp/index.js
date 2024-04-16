@@ -1,8 +1,10 @@
 sap.ui.require([
     "sap/m/Text",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/mvc/XMLView"
-], function (Text, JSONModel, XMLView) {
+    "sap/ui/core/mvc/XMLView",
+    "sap/ui/model/BindingMode",
+    "sap/ui/model/resource/ResourceModel"
+], function (Text, JSONModel, XMLView, BindingMode, ResourceModel) {
     "use strict"
 
     // Attach an anonymous function to the SAPUI5 'init' event
@@ -15,9 +17,19 @@ sap.ui.require([
             panelHeaderText: "Data Binding Basics"
         });
 
+        var oResourceModel = new ResourceModel({
+            bundleName: "sap.ui.demo.db.i18n.i18n",
+            supportedLocales: ["", "tr"],
+            fallbackLocale:""
+        })
+
+        sap.ui.getCore().setModel(oResourceModel, "i18n");
+
+        // oModel.setDefaultBindingMode(BindingMode.OneWay);
+
         // Assign the model object to the SAPUI5 core
         sap.ui.getCore().setModel(oModel);
-
+        
         // Display the XML view called "App"
         new XMLView({
             viewName: "sap.ui.demo.db.view.App"

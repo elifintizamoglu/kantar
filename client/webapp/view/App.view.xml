@@ -2,24 +2,34 @@
     xmlns="sap.m"
     xmlns:form="sap.ui.layout.form"
     xmlns:mvc="sap.ui.core.mvc">
-    <Panel headerText="{i18n>panelHeaderText}"
-           class="sapUiResponsiveMargin"
-           width="auto">
-           <form:SimpleForm
-            editbale="true"
-            layout="ColumnLayout">
-                <Label text="{i18n>firstName}"/>
-                <Input value="{/firstName}"
-                       valueLiveUpdate="true"
-                       width="200px"
-                       enabled="{/enabled}"/>
-                <Label text="{i18n>lastName}"/>
-                <Input value="{/lastName}"
-                       valueLiveUpdate="true"
-                       width="200px"
-                       enabled="{/enabled}"/>
-                <Label text="{i18n>enabled}"/>
-                <CheckBox selected="{/enabled}"/>
-            </form:SimpleForm>
+    <Panel headerText="Backend Verilerini Getir">
+        <!-- Butonu XML dosyasında tanımlama -->
+        <Button text="Verileri Getir" press="onGetData" />
     </Panel>
+    
+    <Panel
+        headerText="{i18n>panel2HeaderText}"
+        class="sapUiResponsiveMargin"
+        width="auto">
+        <List
+            headerText="{i18n>dataListTitle}"
+            items="{datas>/Datas}">
+            <ObjectListItem 
+                title="{datas>plaka}"
+                number="{
+                    parts:[
+                        {path: 'datas>id'},
+                    ]
+                }"
+              >
+              <attributes>
+                <ObjectAttribute title="Giriş Ağırlık" text="{datas>giris_agirlik}"/>
+                <ObjectAttribute title="Giriş Saati" text="{path: 'datas>giris_saati'}"/>
+                <ObjectAttribute title="Çıkış Ağırlık" text="{datas>cikis_agirlik}"/>
+                <ObjectAttribute title="Çıkış Saati" text="{path: 'datas>cikis_saati'}"/>
+            </attributes>
+            </ObjectListItem>     
+        </List>
+    </Panel>
+    
 </mvc:View>

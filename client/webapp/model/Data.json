@@ -1,0 +1,36 @@
+{
+    "Datas" : [
+        {
+            "id": 1,
+            "plaka": "20ABC02",
+            "giris_agirlik": 25.45,
+            "giris_saati": "2024-01-01T07:00:00.000Z",
+            "cikis_agirlik": null,
+            "cikis_saati": null
+        },
+        {
+            "id": 2,
+            "plaka": "06XYZ789",
+            "giris_agirlik": 30000.5,
+            "giris_saati": "2024-04-15T09:30:00.000Z",
+            "cikis_agirlik": null,
+            "cikis_saati": null
+        },
+        {
+            "id": 3,
+            "plaka": "01ABC02",
+            "giris_agirlik": 25.45,
+            "giris_saati": "2024-01-01T07:00:00.000Z",
+            "cikis_agirlik": 25.45,
+            "cikis_saati": "2024-01-01T07:00:00.000Z"
+        },
+        {
+            "id": 4,
+            "plaka": "05ABC02",
+            "giris_agirlik": 25.45,
+            "giris_saati": "2024-01-01T07:00:00.000Z",
+            "cikis_agirlik": null,
+            "cikis_saati": null
+        }
+    ]
+}

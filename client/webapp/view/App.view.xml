@@ -2,34 +2,31 @@
     xmlns="sap.m"
     xmlns:form="sap.ui.layout.form"
     xmlns:mvc="sap.ui.core.mvc">
-    <Panel headerText="Backend Verilerini Getir">
-        <!-- Butonu XML dosyasında tanımlama -->
-        <Button text="Verileri Getir" press="onGetData" />
-    </Panel>
-    
-    <Panel
-        headerText="{i18n>panel2HeaderText}"
-        class="sapUiResponsiveMargin"
-        width="auto">
+    <Panel>
         <List
-            headerText="{i18n>dataListTitle}"
-            items="{datas>/Datas}">
-            <ObjectListItem 
-                title="{datas>plaka}"
-                number="{
-                    parts:[
-                        {path: 'datas>id'},
-                    ]
-                }"
-              >
-              <attributes>
-                <ObjectAttribute title="Giriş Ağırlık" text="{datas>giris_agirlik}"/>
-                <ObjectAttribute title="Giriş Saati" text="{path: 'datas>giris_saati'}"/>
-                <ObjectAttribute title="Çıkış Ağırlık" text="{datas>cikis_agirlik}"/>
-                <ObjectAttribute title="Çıkış Saati" text="{path: 'datas>cikis_saati'}"/>
-            </attributes>
-            </ObjectListItem>     
-        </List>
+        headerText="Backend Verileri"
+        items="{
+            path: 'getAllData>/',
+            sorter: {
+                path: 'id',
+                descending: false
+            }
+        }"
+    >
+        <items>
+            <ObjectListItem
+                title="{getAllData>plaka}"
+                number="{getAllData>id}"
+            >
+                <attributes>
+                    <ObjectAttribute title="Giriş Ağırlık" text="{getAllData>giris_agirlik}"/>
+                    <ObjectAttribute title="Giriş Saati" text="{getAllData>giris_saati}"/>
+                    <ObjectAttribute title="Çıkış Ağırlık" text="{getAllData>cikis_agirlik}"/>
+                    <ObjectAttribute title="Çıkış Saati" text="{getAllData>cikis_saati}"/>
+                </attributes>
+            </ObjectListItem>
+        </items>
+    </List>
     </Panel>
     
 </mvc:View>

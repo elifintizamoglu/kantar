@@ -7,7 +7,9 @@ const bodyParser = require('body-parser')
 const app = express() // creating an instance of the express application which server as the backbone of our server
 app.use(bodyParser.json());
 //app.use(express.static(path.join(__dirname, "public"))) // set up middleware functions to serve static files, a crucial aspect of handling client-side assets like CSS and JavaScript
-app.use(cors());  // address security concerns by implementing cors to manage and control web security. 
+app.use(cors({
+    origin: 'http://localhost:8080'
+}));  // address security concerns by implementing cors to manage and control web security. 
 //app.use(express.json()) // parsing json data from incoming HHTp requests which is essential for processing data sent from the client
 
 const port = 5000 // set the port, specify where the server will listen for incoming requests.

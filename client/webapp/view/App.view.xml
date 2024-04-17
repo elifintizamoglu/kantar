@@ -3,30 +3,38 @@
     xmlns:form="sap.ui.layout.form"
     xmlns:mvc="sap.ui.core.mvc">
     <Panel>
-        <List
-        headerText="Backend Verileri"
-        items="{
-            path: 'getAllData>/',
-            sorter: {
-                path: 'id',
-                descending: false
-            }
-        }"
-    >
+        <Table id="myTable" items="{getAllData>/}">
+        <!-- Tablo sütunları -->
+        <columns>
+            <Column>
+                <Text text="Plaka"/>
+            </Column>
+            <Column>
+                <Text text="Giriş Ağırlık"/>
+            </Column>
+            <Column>
+                <Text text="Giriş Saati"/>
+            </Column>
+            <Column>
+                <Text text="Çıkış Ağırlık"/>
+            </Column>
+            <Column>
+                <Text text="Çıkış Saati"/>
+            </Column>
+        </columns>
+        <!-- Tablo satırları -->
         <items>
-            <ObjectListItem
-                title="{getAllData>plaka}"
-                number="{getAllData>id}"
-            >
-                <attributes>
-                    <ObjectAttribute title="Giriş Ağırlık" text="{getAllData>giris_agirlik}"/>
-                    <ObjectAttribute title="Giriş Saati" text="{getAllData>giris_saati}"/>
-                    <ObjectAttribute title="Çıkış Ağırlık" text="{getAllData>cikis_agirlik}"/>
-                    <ObjectAttribute title="Çıkış Saati" text="{getAllData>cikis_saati}"/>
-                </attributes>
-            </ObjectListItem>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{getAllData>plaka}"/>
+                    <Text text="{getAllData>giris_agirlik}"/>
+                    <Text text="{getAllData>giris_saati}"/>
+                    <Text text="{getAllData>cikis_agirlik}"/>
+                    <Text text="{getAllData>cikis_saati}"/>
+                </cells>
+            </ColumnListItem>
         </items>
-    </List>
+    </Table>
     </Panel>
     
 </mvc:View>

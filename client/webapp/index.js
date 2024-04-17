@@ -27,6 +27,5 @@ sap.ui.require([
         new XMLView({
             viewName: "sap.ui.demo.db.view.App"
         }).placeAt("content");
-        
     })
 })

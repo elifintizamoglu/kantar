@@ -1,42 +1,60 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/core/format/DateFormat"
-], function (Controller, DateFormat) {
+    "sap/m/Dialog",
+    "sap/m/Button",
+    "sap/m/Input",
+    "sap/m/Label",
+    "sap/m/DatePicker",
+    "sap/m/TimePicker",
+    "sap/ui/core/format/DateFormat",
+    "sap/ui/model/json/JSONModel"
+], function (Controller, Dialog, Button, Input, Label, DatePicker, TimePicker, DateFormat, JSONModel) {
     "use strict"
     return Controller.extend("sap.ui.demo.client.App", {
 
+        onLoadData: function () {
+            var oModel = new JSONModel();
+            oModel.loadData("http://localhost:5000/api/getAllData"); // Node.js API endpoint'i
+            oModel.attachRequestCompleted(function () {
+                var data = oModel.getData();
+                console.log(data);
+            });
+            sap.ui.getCore().setModel(oModel, "getAllData");
+        },
+
         onAddData: function () {
-            var oDialog = new sap.m.Dialog({
+            var that = this; 
+            var oDialog = new Dialog({
                 title: "Yeni Veri Ekle",
                 contentWidth: "600px",
                 content: [
                     new sap.ui.layout.form.SimpleForm({
                         layout: "ResponsiveGridLayout",
                         content: [
-                            new sap.m.Label({ text: "Plaka" }),
-                            new sap.m.Input({ id: "plateInput" }),
+                            new Label({ text: "Plaka" }),
+                            new Input({ id: "plateInput" }),
 
-                            new sap.m.Label({ text: "Giriş Tarihi" }),
-                            new sap.m.DatePicker({ id: "entryDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
+                            new Label({ text: "Giriş Tarihi" }),
+                            new DatePicker({ id: "entryDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
 
-                            new sap.m.Label({ text: "Giriş Saati" }),
-                            new sap.m.TimePicker({ id: "entryTimeInput", displayFormat: "HH:mm" }),
+                            new Label({ text: "Giriş Saati" }),
+                            new TimePicker({ id: "entryTimeInput", displayFormat: "HH:mm" }),
 
-                            new sap.m.Label({ text: "Giriş Ağırlığı (kg)" }),
-                            new sap.m.Input({ id: "entryWeightInput" }),
+                            new Label({ text: "Giriş Ağırlığı (kg)" }),
+                            new Input({ id: "entryWeightInput" }),
 
-                            new sap.m.Label({ text: "Çıkış Tarihi" }),
-                            new sap.m.DatePicker({ id: "exitDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
+                            new Label({ text: "Çıkış Tarihi" }),
+                            new DatePicker({ id: "exitDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
 
-                            new sap.m.Label({ text: "Çıkış Saati" }),
-                            new sap.m.TimePicker({ id: "exitTimeInput", displayFormat: "HH:mm" }),
+                            new Label({ text: "Çıkış Saati" }),
+                            new TimePicker({ id: "exitTimeInput", displayFormat: "HH:mm" }),
 
-                            new sap.m.Label({ text: "Çıkış Ağırlığı (kg)" }),
-                            new sap.m.Input({ id: "exitWeightInput" }),
+                            new Label({ text: "Çıkış Ağırlığı (kg)" }),
+                            new Input({ id: "exitWeightInput" }),
                         ]
                     })
                 ],
-                beginButton: new sap.m.Button({
+                beginButton: new Button({
                     text: "Kaydet",
                     press: function () {
                         var plate = sap.ui.getCore().byId("plateInput").getValue();
@@ -71,6 +89,7 @@ sap.ui.define([
                         xhr.onload = function () {
                             if (xhr.status === 200) {
                                 console.log('Veri başarıyla eklendi:', xhr.responseText);
+                                that.onLoadData();
                             } else {
                                 console.error('Veri eklenirken hata oluştu:', xhr.statusText);
                             }
@@ -81,7 +100,7 @@ sap.ui.define([
                         oDialog.destroy();
                     }
                 }),
-                endButton: new sap.m.Button({
+                endButton: new Button({
                     text: "İptal",
                     press: function () {
                         oDialog.close();
@@ -111,79 +130,3 @@ sap.ui.define([
         }
     });
 });
-
-
-
-
-
-/*sap.ui.require([
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
-], function(Controller, JSONModel) {
-    "use strict";
-
-    return Controller.extend("webapp.controller.Controller.js", {
-        onInit: function() {
-            var oModel = new JSONModel();
-            oModel.loadData("http://localhost:5000/api/getAllData");
-            sap.ui.getCore().setModel(oModel, "getAllData");
-            console.log(oModel.getData());
-
-            new XMLView({
-                viewName: "sap.ui.demo.db.view.App"
-            }).placeAt("content");
-        },
-
-        onButtonPress: function() {
-            var oModel = this.getView().getModel("modelName");
-            var data = oModel.getData();
-            // Veri işlemleri yapılabilir
-        }
-
-        
-    });
-});*/
-
-
-
-
-
-
-
-
-
-/*sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
-], function(Controller, JSONModel) {
-    "use strict";
-
-    return Controller.extend("myController", {
-        onInit: function() {
-            // Controller başlatıldığında yapılacak işlemler buraya yazılabilir
-        },
-
-        onGetData: function() {
-            // Backend URL
-            var backendUrl = 'http://localhost:5000/api/data'; // Backend API endpoint'i
-
-            // Fetch ile GET isteği
-            fetch(backendUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Received data from backend:', data);
-                    // Verileri kullanmak için model oluşturabilirsiniz
-                    var oModel = new JSONModel(data);
-                    this.getView().setModel(oModel, "backendData");
-                })
-                .catch(error => {
-                    console.error('Error fetching data from backend:', error);
-                });
-        }
-    });
-});*/

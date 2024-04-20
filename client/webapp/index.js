@@ -14,18 +14,14 @@ sap.ui.require([
         })
         sap.ui.getCore().setModel(oResourceModel, "i18n");
 
-        var oModel = new JSONModel();
-        oModel.loadData("http://localhost:5000/api/getAllData"); // Node.js API endpoint'i
-        oModel.attachRequestCompleted(function () {
-            var data = oModel.getData();
-            console.log(data);
-        });
-        sap.ui.getCore().setModel(oModel, "getAllData");
 
         XMLView.create({
             viewName: "sap.ui.demo.client.view.App"
         }).then(function (oView) {
             oView.placeAt("content");
+
+            var oController = oView.getController();
+            oController.onLoadData();
         });
 
     })

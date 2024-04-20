@@ -18,7 +18,7 @@ const connection = mysql.createConnection({ // establish a connection to the MyS
     host: "localhost",
     user: "root",
     password: "sec382mSL",
-    database: "kantar"
+    database: "weighbridge"
 })
 
 connection.connect(err => {
@@ -32,9 +32,9 @@ connection.connect(err => {
 
 app.post('/api/addData', (req, res) => {
 
-    const { plaka, giris_agirlik, giris_saati, cikis_agirlik, cikis_saati } = req.body;
-    sql = "INSERT INTO kantar.arac_giris_cikis (`plaka`, `giris_agirlik`, `giris_saati`,`cikis_agirlik`, `cikis_saati` ) VALUES (?, ?, ?, ?, ?)";
-    const values = [plaka, giris_agirlik, giris_saati, cikis_agirlik, cikis_saati];
+    const { plate, entry_date, entry_time, entry_weight, exit_date, exit_time, exit_weight } = req.body;
+    sql = "INSERT INTO weighbridge.weight_track (`plate`, `entry_date`, `entry_time`,`entry_weight`, `exit_date`, `exit_time`, `exit_weight` ) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const values = [plate, entry_date, entry_time, entry_weight, exit_date, exit_time, exit_weight];
 
     connection.query(sql, values, (err, result) => {
         if (err) {
@@ -51,7 +51,7 @@ app.post('/api/addData', (req, res) => {
 
 app.get('/api/getAllData', (req, res) => {
 
-    const sql = 'SELECT * FROM arac_giris_cikis';
+    const sql = 'SELECT * FROM weight_track';
     connection.query(sql, (err, results) => {
         if (err) {
             console.error('Verileri çekerken hata oluştu:', err);
@@ -65,7 +65,7 @@ app.get('/api/getAllData', (req, res) => {
 
 app.get('/api/getById/:id', (req, res) => {
     const dataId = req.params.id;
-    const sql = 'SELECT * FROM arac_giris_cikis WHERE id = ?';
+    const sql = 'SELECT * FROM weight_track WHERE id = ?';
     const values = [dataId];
 
     connection.query(sql, values, (err, results) => {
@@ -86,7 +86,7 @@ app.get('/api/getById/:id', (req, res) => {
 app.delete('/api/delete/:id', (req, res) => {
     const dataId = req.params.id;
 
-    const sql = "DELETE FROM arac_giris_cikis WHERE id = ?";
+    const sql = "DELETE FROM weight_track WHERE id = ?";
     const values = [dataId];
 
     connection.query(sql, values, (err, result) => {
@@ -106,11 +106,11 @@ app.delete('/api/delete/:id', (req, res) => {
 
 app.put('/api/update/:id', (req, res) => {
     const dataId = req.params.id; // URL'den gelen ":id" parametresini al
-    const { plaka, giris_agirlik, giris_saati, cikis_agirlik, cikis_saati } = req.body; // PUT isteği ile gönderilen verileri al
+    const { plate, entry_date, entry_time, entry_weight, exit_date, exit_time, exit_weight } = req.body; // PUT isteği ile gönderilen verileri al
     // Veritabanında kullanıcıyı ID'ye göre güncelleyen SQL sorgusu
 
-    const sql = 'UPDATE arac_giris_cikis SET plaka = ?, giris_agirlik = ?, giris_saati = ?, cikis_agirlik = ?, cikis_saati = ? WHERE id = ?';
-    const values = [plaka, giris_agirlik, giris_saati, cikis_agirlik, cikis_saati, dataId];
+    const sql = 'UPDATE weight_track SET plate = ?, entry_date = ?, entry_time = ?, entry_weight = ?, exit_date = ?, exit_time = ?, exit_weight = ? WHERE id = ?';
+    const values = [plate, entry_date, entry_time, entry_weight, exit_date, exit_time, exit_weight, dataId];
 
     // Veritabanı sorgusunu yürütme
     connection.query(sql, values, (err, result) => {

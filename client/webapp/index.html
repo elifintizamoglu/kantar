@@ -10,12 +10,11 @@
 		data-sap-ui-libs="sap.m"
 		data-sap-ui-compatVersion="edge"
 		data-sap-ui-async="true"
-        data-sap-ui-resourceroots='{
-            "sap.ui.demo.db": "./"
-        }'>
+        data-sap-ui-onInit="module:sap/ui/demo/client/index"
+		data-sap-ui-resourceroots='{
+		"sap.ui.demo.client": "./"
+	}'>
 	</script>
-	<script src="index.js"></script>
-	
 </head>
 <body class="sapUiBody" id="content">
 	

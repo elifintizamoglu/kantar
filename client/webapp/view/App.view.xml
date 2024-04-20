@@ -1,40 +1,79 @@
-<mvc:View
+<mvc:View controllerName="sap.ui.demo.client.controller.App"
     xmlns="sap.m"
     xmlns:form="sap.ui.layout.form"
     xmlns:mvc="sap.ui.core.mvc">
+
+    <Button text="Say Hi" press=".onShowHello"/>
+    <Panel headerText="Yeni Veri Ekle">
+        <VBox class="sapUiSmallMargin">
+            <Label text="Plaka" />
+            <Input id="plateInput" placeholder="Plaka Giriniz" />
+
+            <Label text="Giriş Tarihi" />
+            <DatePicker id="entryDateInput" displayFormat="dd.MM.yyyy" valueFormat="yyyy-MM-dd" />
+
+            <Label text="Giriş Saati" />
+            <TimePicker id="entryTimeInput" displayFormat="HH:mm" />
+
+            <Label text="Giriş Ağırlığı (kg)" />
+            <Input id="entryWeightInput" type="Number" placeholder="Ağırlık Giriniz" />
+
+            <Label text="Çıkış Tarihi" />
+            <DatePicker id="exitDateInput" displayFormat="dd.MM.yyyy" valueFormat="yyyy-MM-dd"/>
+
+            <Label text="Çıkış Saati" />
+            <TimePicker id="exitTimeInput" displayFormat="HH:mm"/>
+
+            <Label text="Çıkış Ağırlığı (kg)" />
+            <Input id="exitWeightInput" type="Number" placeholder="Ağırlık Giriniz" />
+
+            <Button text="Kaydet" press="onSaveData"/>
+        </VBox>
+
+        <!-- Kaydet butonu -->
+
+    </Panel>
     <Panel>
         <Table id="myTable" items="{getAllData>/}">
-        <!-- Tablo sütunları -->
-        <columns>
-            <Column>
-                <Text text="Plaka"/>
-            </Column>
-            <Column>
-                <Text text="Giriş Ağırlık"/>
-            </Column>
-            <Column>
-                <Text text="Giriş Saati"/>
-            </Column>
-            <Column>
-                <Text text="Çıkış Ağırlık"/>
-            </Column>
-            <Column>
-                <Text text="Çıkış Saati"/>
-            </Column>
-        </columns>
-        <!-- Tablo satırları -->
-        <items>
-            <ColumnListItem>
-                <cells>
-                    <Text text="{getAllData>plaka}"/>
-                    <Text text="{getAllData>giris_agirlik}"/>
-                    <Text text="{getAllData>giris_saati}"/>
-                    <Text text="{getAllData>cikis_agirlik}"/>
-                    <Text text="{getAllData>cikis_saati}"/>
-                </cells>
-            </ColumnListItem>
-        </items>
-    </Table>
+            <!-- Tablo sütunları -->
+            <columns>
+                <Column>
+                    <Text text="Plaka"/>
+                </Column>
+                <Column>
+                    <Text text="Giriş Tarihi"/>
+                </Column>
+                <Column>
+                    <Text text="Giriş Saati"/>
+                </Column>
+                <Column>
+                    <Text text="Giriş Ağırlığı"/>
+                </Column>
+                <Column>
+                    <Text text="Çıkış Tarihi"/>
+                </Column>
+                <Column>
+                    <Text text="Çıkış Saati"/>
+                </Column>
+                <Column>
+                    <Text text="Çıkış Ağırlığı"/>
+                </Column>
+            </columns>
+            <!-- Tablo satırları -->
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Text text="{getAllData>plate}"/>
+                        <Text text="{path: 'getAllData>entry_date', formatter: '.formatDate'}" />
+                        <Text text="{getAllData>entry_time}"/>
+                        <Text text="{getAllData>entry_weight}"/>
+                        <Text text="{path: 'getAllData>exit_date', formatter: '.formatDate'}"/>
+                        <Text text="{getAllData>exit_time}"/>
+                        <Text text="{getAllData>exit_weight}"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
     </Panel>
-    
+
 </mvc:View>

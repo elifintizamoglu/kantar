@@ -7,7 +7,6 @@
 
     <Panel headerText="Veriler">
         <Table id="myTable" items="{getAllData>/}">
-            <!-- Tablo sütunları -->
             <columns>
                 <Column>
                     <Text text="Plaka" />
@@ -31,7 +30,6 @@
                     <Text text="Çıkış Ağırlığı" />
                 </Column>
             </columns>
-            <!-- Tablo satırları -->
             <items>
                 <ColumnListItem>
                     <cells>
@@ -47,8 +45,4 @@
             </items>
         </Table>
     </Panel>
-
-
-
-
 </mvc:View>

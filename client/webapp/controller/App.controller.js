@@ -9,6 +9,98 @@ sap.ui.define([
             // Show a native or vanailla JS alert
             alert("Hello there!");
         },
+        onAddData: function () {
+            var oDialog = new sap.m.Dialog({
+                title: "Yeni Veri Ekle",
+                contentWidth: "600px",
+                content: [
+                    new sap.ui.layout.form.SimpleForm({
+                        layout: "ResponsiveGridLayout",
+                        content: [
+                            new sap.m.Label({ text: "Plaka" }),
+                            new sap.m.Input({ id: "plateInput" }),
+
+                            new sap.m.Label({ text: "Giriş Tarihi" }),
+                            new sap.m.DatePicker({ id: "entryDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
+
+                            new sap.m.Label({ text: "Giriş Saati" }),
+                            new sap.m.TimePicker({ id: "entryTimeInput", displayFormat: "HH:mm" }),
+
+                            new sap.m.Label({ text: "Giriş Ağırlığı (kg)" }),
+                            new sap.m.Input({ id: "entryWeightInput" }),
+
+                            new sap.m.Label({ text: "Çıkış Tarihi" }),
+                            new sap.m.DatePicker({ id: "exitDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
+
+                            new sap.m.Label({ text: "Çıkış Saati" }),
+                            new sap.m.TimePicker({ id: "exitTimeInput", displayFormat: "HH:mm" }),
+
+                            new sap.m.Label({ text: "Çıkış Ağırlığı (kg)" }),
+                            new sap.m.Input({ id: "exitWeightInput" }),
+                        ]
+                    })
+                ],
+                beginButton: new sap.m.Button({
+                    text: "Kaydet",
+                    press: function () {
+                        var plate = sap.ui.getCore().byId("plateInput").getValue();
+                        var entry_date = sap.ui.getCore().byId("entryDateInput").getValue();
+                        var entry_time = sap.ui.getCore().byId("entryTimeInput").getValue();
+                        var entry_weight = sap.ui.getCore().byId("entryWeightInput").getValue();
+                        var exit_date = sap.ui.getCore().byId("exitDateInput").getValue();
+                        var exit_time = sap.ui.getCore().byId("exitTimeInput").getValue();
+                        var exit_weight = sap.ui.getCore().byId("exitWeightInput").getValue();
+
+                        // Verileri işleme veya backend'e kaydetme
+                        var postData = {
+                            plate: plate,
+                            entry_date: entry_date,
+                            entry_time: entry_time,
+                            entry_weight: entry_weight,
+                            exit_date: exit_date,
+                            exit_time: exit_time,
+                            exit_weight: exit_weight
+                        };
+
+                        // Şimdi bu verileri kullanabilir veya başka bir işlem yapabilirsiniz
+                        console.log("Plaka: " + postData.plate);
+                        console.log("Giriş Tarihi: " + postData.entry_date);
+                        console.log("Giriş Saati: " + postData.entry_time);
+                        console.log("Giriş Ağırlığı: " + postData.entry_weight);
+                        console.log("Çıkış Tarihi: " + postData.exit_date);
+                        console.log("Çıkış Saati: " + postData.exit_time);
+                        console.log("Çıkış Ağırlığı: " + postData.exit_weight);
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'http://localhost:5000/api/addData');
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.onload = function () {
+                            if (xhr.status === 200) {
+                                console.log('Veri başarıyla eklendi:', xhr.responseText);
+                                // Başarılı ekleme durumunda gerekli işlemleri yapabilirsiniz
+                            } else {
+                                console.error('Veri eklenirken hata oluştu:', xhr.statusText);
+                                // Hata durumunda gerekli işlemleri yapabilirsiniz
+                            }
+                        };
+                        xhr.send(JSON.stringify(postData));
+
+                        // Popup penceresini kapatma
+                        oDialog.close();
+                        oDialog.destroy();
+                    }
+                }),
+                endButton: new sap.m.Button({
+                    text: "İptal",
+                    press: function () {
+                        // İptal butonuna tıklama işlemi
+                        oDialog.close();
+                        oDialog.destroy();
+                    }
+                })
+            });
+            oDialog.open();
+        },
         onSaveData: function () {
             var plate = this.getView().byId("plateInput").getValue();
             var entry_date = this.getView().byId("entryDateInput").getValue();
@@ -66,7 +158,7 @@ sap.ui.define([
         },
 
         formatTime: function (time) {
-            
+
             var timeFormat = TimeFormat.getTimeInstance({
                 pattern: "HH:mm" // İstenilen tarih formatı
             });

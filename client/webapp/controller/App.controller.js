@@ -7,28 +7,58 @@ sap.ui.define([
     "sap/m/DatePicker",
     "sap/m/TimePicker",
     "sap/ui/core/format/DateFormat",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, Dialog, Button, Input, Label, DatePicker, TimePicker, DateFormat, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/layout/form/SimpleForm"
+], function (Controller, Dialog, Button, Input, Label, DatePicker, TimePicker, DateFormat, JSONModel, SimpleForm) {
     "use strict"
     return Controller.extend("sap.ui.demo.client.App", {
 
         onLoadData: function () {
             var oModel = new JSONModel();
-            oModel.loadData("http://localhost:5000/api/getAllData"); // Node.js API endpoint'i
+            oModel.loadData("http://localhost:5000/api/getAllData");
+            sap.ui.getCore().setModel(oModel, "getAllData");
+
             oModel.attachRequestCompleted(function () {
                 var data = oModel.getData();
                 console.log(data);
             });
-            sap.ui.getCore().setModel(oModel, "getAllData");
+        },
+
+        onTableItemPress: function (oEvent) {
+            console.log("a");
+            var oSelectedItem = oEvent.getParameter("listItem");
+            console.log(oSelectedItem);
+            if (oSelectedItem) {
+                console.log("c");
+                // Seçilen öğenin bağlamını al
+                var oContext = oSelectedItem.getBindingContext(sap.ui.getCore().getModel("getAllData"));
+
+                if (oContext) {
+                    // Öğenin bağlamı varsa, bağlamdaki veriyi al
+                    var sItemId = oContext.getProperty("id");
+
+                    if (sItemId) {
+                        // ID'yi saklama
+                        this.selectedItemId = sItemId;
+                        console.log("Tıklanan ID: " + sItemId);
+                    } else {
+                        console.error("ID bulunamadı.");
+                    }
+                } else {
+                    console.error("Bağlam bulunamadı veya geçersiz.");
+                }
+            } else {
+                console.error("Seçili öğe bulunamadı veya geçersiz.");
+            }
         },
 
         onAddData: function () {
-            var that = this; 
+            var that = this;
             var oDialog = new Dialog({
                 title: "Yeni Veri Ekle",
                 contentWidth: "600px",
                 content: [
-                    new sap.ui.layout.form.SimpleForm({
+                    new SimpleForm({
                         layout: "ResponsiveGridLayout",
                         content: [
                             new Label({ text: "Plaka" }),
@@ -57,31 +87,16 @@ sap.ui.define([
                 beginButton: new Button({
                     text: "Kaydet",
                     press: function () {
-                        var plate = sap.ui.getCore().byId("plateInput").getValue();
-                        var entry_date = sap.ui.getCore().byId("entryDateInput").getValue();
-                        var entry_time = sap.ui.getCore().byId("entryTimeInput").getValue();
-                        var entry_weight = sap.ui.getCore().byId("entryWeightInput").getValue();
-                        var exit_date = sap.ui.getCore().byId("exitDateInput").getValue();
-                        var exit_time = sap.ui.getCore().byId("exitTimeInput").getValue();
-                        var exit_weight = sap.ui.getCore().byId("exitWeightInput").getValue();
 
                         var postData = {
-                            plate: plate,
-                            entry_date: entry_date,
-                            entry_time: entry_time,
-                            entry_weight: entry_weight,
-                            exit_date: exit_date,
-                            exit_time: exit_time,
-                            exit_weight: exit_weight
+                            plate: sap.ui.getCore().byId("plateInput").getValue(),
+                            entry_date: sap.ui.getCore().byId("entryDateInput").getValue(),
+                            entry_time: sap.ui.getCore().byId("entryTimeInput").getValue(),
+                            entry_weight: sap.ui.getCore().byId("entryWeightInput").getValue(),
+                            exit_date: sap.ui.getCore().byId("exitDateInput").getValue(),
+                            exit_time: sap.ui.getCore().byId("exitTimeInput").getValue(),
+                            exit_weight: sap.ui.getCore().byId("exitWeightInput").getValue()
                         };
-
-                        console.log("Plaka: " + postData.plate);
-                        console.log("Giriş Tarihi: " + postData.entry_date);
-                        console.log("Giriş Saati: " + postData.entry_time);
-                        console.log("Giriş Ağırlığı: " + postData.entry_weight);
-                        console.log("Çıkış Tarihi: " + postData.exit_date);
-                        console.log("Çıkış Saati: " + postData.exit_time);
-                        console.log("Çıkış Ağırlığı: " + postData.exit_weight);
 
                         var xhr = new XMLHttpRequest();
                         xhr.open('POST', 'http://localhost:5000/api/addData');
@@ -121,12 +136,13 @@ sap.ui.define([
         },
 
         formatTime: function (time) {
-            var timeFormat = TimeFormat.getTimeInstance({
+            var timeFormat = DateFormat.getTimeInstance({
                 pattern: "HH:mm"
             });
-            var timeObject = new Date(time);
+            var timeObject = new time(time);
             var formattedTime = timeFormat.format(timeObject);
             return formattedTime;
+
         }
     });
 });

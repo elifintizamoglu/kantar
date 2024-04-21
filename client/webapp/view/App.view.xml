@@ -54,9 +54,9 @@
                     <Panel headerText="Seçenekler" width="70%" class="sapUiResponsiveMargin">
                         <content>
                             <VBox justifyContent="Center" alignItems="Center">
-                                <Button text="Ekle" press=".onAddData" width="150px" class ="myCustomButton"/>
+                                <Button text="Ekle" press=".onAddData" width="150px" class="myButton"/>
                                 <Button text="Sil" press=".onDeleteData" width="150px"/>
-                                <Button text="Güncelle" press=".onDeleteData" width="150px"/>
+                                <Button text="Güncelle" press=".onUpdateData" width="150px"/>
                             </VBox>
                         </content>
                     </Panel>

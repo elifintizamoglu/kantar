@@ -16,22 +16,19 @@ sap.ui.define([
     return Controller.extend("sap.ui.demo.client.App", {
 
         selectedItemId: null,
+        selectedItem: null,
 
         onLoadData: function () {
             var oModel = new JSONModel();
             oModel.loadData("http://localhost:5000/api/getAllData");
             sap.ui.getCore().setModel(oModel, "getAllData");
-
-            oModel.attachRequestCompleted(function () {
-                var data = oModel.getData();
-                console.log(data);
-            });
         },
 
         onTableItemPress: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("listItem");
             if (oSelectedItem) {
                 var oContext = oSelectedItem.getBindingContext("getAllData");
+                this.selectedItem = oContext;
                 if (oContext) {
                     var sItemId = oContext.getProperty("id");
                     if (sItemId) {
@@ -87,7 +84,6 @@ sap.ui.define([
                 }
             }).then(response => {
                 if (response.ok) {
-                    console.log('Veri başarıyla silindi.');
                     this.onLoadData();
                 } else {
                     console.error('Veri silinirken hata oluştu:', response.statusText);
@@ -96,7 +92,6 @@ sap.ui.define([
                 console.error('İstek sırasında hata oluştu:', error);
             });
             this.selectedItemId = null;
-            console.log("Veri silme işlemi gerçekleştirildi.");
         },
 
         onAddData: function () {
@@ -172,6 +167,94 @@ sap.ui.define([
             });
             oDialog.open();
         },
+
+        onUpdateData: function () {
+            var that = this;
+            if (this.selectedItemId) {
+                var oDialog = new Dialog({
+                    title: "Veri Güncelle",
+                    contentWidth: "600px",
+                    content: [
+                        new SimpleForm({
+                            layout: "ResponsiveGridLayout",
+                            content: [
+                                new Label({ text: "Plaka" }),
+                                new Input({ id: "plateInput", value: this.selectedItem.getProperty("plate") }),
+
+                                new Label({ text: "Giriş Tarihi" }),
+                                new DatePicker({ id: "entryDateInput", value: this.formatDate(this.selectedItem.getProperty("entry_date")), displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
+
+                                new Label({ text: "Giriş Saati" }),
+                                new TimePicker({ id: "entryTimeInput", value: this.selectedItem.getProperty("entry_time"), displayFormat: "HH:mm" }),
+
+                                new Label({ text: "Giriş Ağırlığı (kg)" }),
+                                new Input({ id: "entryWeightInput", value: this.selectedItem.getProperty("entry_weight") }),
+
+                                new Label({ text: "Çıkış Tarihi" }),
+                                new DatePicker({ id: "exitDateInput", value: this.formatDate(this.selectedItem.getProperty("exit_date")), displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
+
+                                new Label({ text: "Çıkış Saati" }),
+                                new TimePicker({ id: "exitTimeInput", value: this.selectedItem.getProperty("exit_time"), displayFormat: "HH:mm", }),
+
+                                new Label({ text: "Çıkış Ağırlığı (kg)" }),
+                                new Input({ id: "exitWeightInput", value: this.selectedItem.getProperty("exit_weight") }),
+                            ]
+
+                        })
+                    ],
+                    beginButton: new Button({
+                        text: "Güncelle",
+                        press: function () {
+                            var updateData = {
+                                plate: sap.ui.getCore().byId("plateInput").getValue(),
+                                entry_date: sap.ui.getCore().byId("entryDateInput").getValue(),
+                                entry_time: sap.ui.getCore().byId("entryTimeInput").getValue(),
+                                entry_weight: sap.ui.getCore().byId("entryWeightInput").getValue(),
+                                exit_date: sap.ui.getCore().byId("exitDateInput").getValue(),
+                                exit_time: sap.ui.getCore().byId("exitTimeInput").getValue(),
+                                exit_weight: sap.ui.getCore().byId("exitWeightInput").getValue()
+                            };
+
+                            var sUrl = "http://localhost:5000/api/update/" + that.selectedItemId;
+
+                            fetch(sUrl, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(updateData)
+                            })
+                                .then(function (response) {
+                                    if (response.ok) {
+                                        console.log('Veri başarıyla güncellendi');
+                                        that.onLoadData(); // Verileri yeniden yükle
+                                    } else {
+                                        console.error('Veri güncellenirken hata oluştu:', response.statusText);
+                                    }
+                                })
+                                .catch(function (error) {
+                                    console.error('İstek sırasında hata oluştu:', error);
+                                });
+
+                            oDialog.close();
+                            oDialog.destroy();
+                        }
+                    }),
+                    endButton: new Button({
+                        text: "İptal",
+                        press: function () {
+                            oDialog.close();
+                            oDialog.destroy();
+                        }
+                    })
+                });
+                oDialog.open();
+
+            }
+
+        },
+
+
 
         formatDate: function (date) {
             var dateFormat = DateFormat.getDateInstance({

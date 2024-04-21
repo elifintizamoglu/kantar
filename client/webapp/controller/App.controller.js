@@ -9,8 +9,7 @@ sap.ui.define([
     "sap/m/TimePicker",
     "sap/ui/core/format/DateFormat",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/layout/form/SimpleForm",
-    "sap/m/MessageBox"
+    "sap/ui/layout/form/SimpleForm"
 ], function (Controller, Dialog, Button, Input, Label, Text, DatePicker, TimePicker, DateFormat, JSONModel, SimpleForm) {
     "use strict"
 
@@ -76,7 +75,7 @@ sap.ui.define([
                     }
                 });
                 dialog.open();
-            }
+            } else { alert("Silinecek veri seçiniz."); }
         },
 
         onConfirmDelete: function () {

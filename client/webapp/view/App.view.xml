@@ -5,71 +5,63 @@
     xmlns:l="sap.ui.layout">
 
     <App>
-        <pages>
-            <Page title="{i18n>homePageTitle}">
-                <content>
-                    <!-- Ana FlexBox Container -->
-                    <FlexBox width="100%" height="100%" justifyContent="Start" alignItems="Start" direction="Row">
+        <Page title="{i18n>homePageTitle}">
+            <content>
+                <FlexBox width="100%" height="100%" justifyContent="Start" alignItems="Start" direction="Row">
+                    <Panel headerText="Veriler" width="90%" class="sapUiResponsiveMargin">
+                        <content>
+                            <Table id="myTable" items="{getAllData>/}" itemPress=".onTableItemPress" growing="true" growingThreshold="8">
+                                <columns>
+                                    <Column>
+                                        <Text text="Plaka" />
+                                    </Column>
+                                    <Column>
+                                        <Text text="Giriş Tarihi" />
+                                    </Column>
+                                    <Column>
+                                        <Text text="Giriş Saati" />
+                                    </Column>
+                                    <Column>
+                                        <Text text="Giriş Ağırlığı" />
+                                    </Column>
+                                    <Column>
+                                        <Text text="Çıkış Tarihi" />
+                                    </Column>
+                                    <Column>
+                                        <Text text="Çıkış Saati" />
+                                    </Column>
+                                    <Column>
+                                        <Text text="Çıkış Ağırlığı" />
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem type="Active">
+                                        <cells>
+                                            <Text text="{getAllData>plate}" />
+                                            <Text text="{path: 'getAllData>entry_date', formatter: '.formatDate'}" />
+                                            <Text text="{getAllData>entry_time}" />
+                                            <Text text="{getAllData>entry_weight}" />
+                                            <Text text="{path: 'getAllData>exit_date', formatter: '.formatDate'}" />
+                                            <Text text="{getAllData>exit_time}" />
+                                            <Text text="{getAllData>exit_weight}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </content>
+                    </Panel>
 
-                        <!-- Sol Panel (Tablo) -->
-                        <Panel headerText="Veriler" width="1000px" class="sapUiResponsiveMargin">
-                            <content>
-                                <Table id="myTable" items="{getAllData>/}" selectionChange="onTableItemPress" growing="true" growingThreshold="8">
-                                    <columns>
-                                        <Column>
-                                            <Text text="Plaka" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="Giriş Tarihi" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="Giriş Saati" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="Giriş Ağırlığı" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="Çıkış Tarihi" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="Çıkış Saati" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="Çıkış Ağırlığı" />
-                                        </Column>
-                                    </columns>
-                                    <items>
-                                        <ColumnListItem type="Navigation">
-                                            <cells>
-                                                <Text text="{getAllData>plate}" />
-                                                <Text text="{path: 'getAllData>entry_date', formatter: '.formatDate'}" />
-                                                <Text text="{getAllData>entry_time}" />
-                                                <Text text="{getAllData>entry_weight}" />
-                                                <Text text="{path: 'getAllData>exit_date', formatter: '.formatDate'}" />
-                                                <Text text="{getAllData>exit_time}" />
-                                                <Text text="{getAllData>exit_weight}" />
-                                            </cells>
-                                        </ColumnListItem>
-                                    </items>
-                                </Table>
-                            </content>
-                        </Panel>
-
-                        <!-- Sağ Panel (Butonlar) -->
-                        <Panel headerText="Seçenekler" width="150px" class="sapUiResponsiveMargin">
-                            <content>
-                                <VBox justifyContent="Center" alignItems="Center">
-                                    <Button text="Ekle" press=".onAddData"  width="100px"/>
-                                    <Button text="Sil" press=".onDeleteData" width="100px"/>
-                                    <Button text="Güncelle" press=".onDeleteData" width="100px"/>
-                                </VBox>
-                            </content>
-                        </Panel>
-
-                    </FlexBox>
-                </content>
-            </Page>
-        </pages>
+                    <Panel headerText="Seçenekler" width="70%" class="sapUiResponsiveMargin">
+                        <content>
+                            <VBox justifyContent="Center" alignItems="Center">
+                                <Button text="Ekle" press=".onAddData" width="100px"/>
+                                <Button text="Sil" press=".onDeleteData" width="100px"/>
+                                <Button text="Güncelle" press=".onDeleteData" width="100px"/>
+                            </VBox>
+                        </content>
+                    </Panel>
+                </FlexBox>
+            </content>
+        </Page>
     </App>
-
 </mvc:View>

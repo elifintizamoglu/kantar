@@ -4,14 +4,19 @@ sap.ui.define([
     "sap/m/Button",
     "sap/m/Input",
     "sap/m/Label",
+    "sap/m/Text",
     "sap/m/DatePicker",
     "sap/m/TimePicker",
     "sap/ui/core/format/DateFormat",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/layout/form/SimpleForm"
-], function (Controller, Dialog, Button, Input, Label, DatePicker, TimePicker, DateFormat, JSONModel, SimpleForm) {
+    "sap/ui/layout/form/SimpleForm",
+    "sap/m/MessageBox"
+], function (Controller, Dialog, Button, Input, Label, Text, DatePicker, TimePicker, DateFormat, JSONModel, SimpleForm) {
     "use strict"
+
     return Controller.extend("sap.ui.demo.client.App", {
+
+        selectedItemId: null,
 
         onLoadData: function () {
             var oModel = new JSONModel();
@@ -25,22 +30,14 @@ sap.ui.define([
         },
 
         onTableItemPress: function (oEvent) {
-            console.log("a");
             var oSelectedItem = oEvent.getParameter("listItem");
-            console.log(oSelectedItem);
             if (oSelectedItem) {
-                console.log("c");
-                // Seçilen öğenin bağlamını al
-                var oContext = oSelectedItem.getBindingContext(sap.ui.getCore().getModel("getAllData"));
-
+                var oContext = oSelectedItem.getBindingContext("getAllData");
                 if (oContext) {
-                    // Öğenin bağlamı varsa, bağlamdaki veriyi al
                     var sItemId = oContext.getProperty("id");
-
                     if (sItemId) {
-                        // ID'yi saklama
                         this.selectedItemId = sItemId;
-                        console.log("Tıklanan ID: " + sItemId);
+                        console.log("Seçilen ID: " + sItemId);
                     } else {
                         console.error("ID bulunamadı.");
                     }
@@ -48,8 +45,59 @@ sap.ui.define([
                     console.error("Bağlam bulunamadı veya geçersiz.");
                 }
             } else {
-                console.error("Seçili öğe bulunamadı veya geçersiz.");
+                console.error("Seçilen öğe bulunamadı veya geçersiz.");
             }
+        },
+
+        onDeleteData: function () {
+            var that = this;
+            if (this.selectedItemId) {
+                var dialog = new Dialog({
+                    title: "Veri Silme Onayı",
+                    type: "Message",
+                    content: [
+                        new Text({ text: "Bu veriyi silmek istediğinize emin misiniz?" })
+                    ],
+                    beginButton: new Button({
+                        text: "Evet",
+                        press: function () {
+                            that.onConfirmDelete();
+                            dialog.close();
+                        }
+                    }),
+                    endButton: new Button({
+                        text: "Hayır",
+                        press: function () {
+                            dialog.close();
+                        }
+                    }),
+                    afterClose: function () {
+                        dialog.destroy();
+                    }
+                });
+                dialog.open();
+            }
+        },
+
+        onConfirmDelete: function () {
+            var sUrl = "http://localhost:5000/api/delete/" + this.selectedItemId;
+            fetch(sUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Veri başarıyla silindi.');
+                    this.onLoadData();
+                } else {
+                    console.error('Veri silinirken hata oluştu:', response.statusText);
+                }
+            }).catch(error => {
+                console.error('İstek sırasında hata oluştu:', error);
+            });
+            this.selectedItemId = null;
+            console.log("Veri silme işlemi gerçekleştirildi.");
         },
 
         onAddData: function () {

@@ -9,8 +9,9 @@ sap.ui.define([
     "sap/m/TimePicker",
     "sap/ui/core/format/DateFormat",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/layout/form/SimpleForm"
-], function (Controller, Dialog, Button, Input, Label, Text, DatePicker, TimePicker, DateFormat, JSONModel, SimpleForm) {
+    "sap/ui/layout/form/SimpleForm",
+    "sap/m/MessageBox"
+], function (Controller, Dialog, Button, Input, Label, Text, DatePicker, TimePicker, DateFormat, JSONModel, SimpleForm, MessageBox) {
     "use strict"
 
     return Controller.extend("sap.ui.demo.client.App", {
@@ -140,6 +141,11 @@ sap.ui.define([
                             exit_weight: sap.ui.getCore().byId("exitWeightInput").getValue()
                         };
 
+                        if (!postData.plate || !postData.entry_date || !postData.entry_time || !postData.entry_weight || !postData.exit_date || !postData.exit_time || !postData.exit_weight) {
+                            MessageBox.error("Lütfen tüm alanları doldurun.");
+                            return;
+                        }
+
                         var xhr = new XMLHttpRequest();
                         xhr.open('POST', 'http://localhost:5000/api/addData');
                         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -214,6 +220,11 @@ sap.ui.define([
                                 exit_time: sap.ui.getCore().byId("exitTimeInput").getValue(),
                                 exit_weight: sap.ui.getCore().byId("exitWeightInput").getValue()
                             };
+
+                            if (!updateData.plate || !updateData.entry_date || !updateData.entry_time || !updateData.entry_weight || !updateData.exit_date || !updateData.exit_time || !updateData.exit_weight) {
+                                MessageBox.error("Lütfen tüm alanları doldurun.");
+                                return;
+                            }
 
                             var sUrl = "http://localhost:5000/api/update/" + that.selectedItemId;
 

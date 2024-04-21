@@ -4,17 +4,14 @@ const cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
 
-const app = express() // creating an instance of the express application which server as the backbone of our server
+const app = express() 
 app.use(bodyParser.json());
-//app.use(express.static(path.join(__dirname, "public"))) // set up middleware functions to serve static files, a crucial aspect of handling client-side assets like CSS and JavaScript
 app.use(cors({
     origin: 'http://localhost:8080'
-}));  // address security concerns by implementing cors to manage and control web security. 
-//app.use(express.json()) // parsing json data from incoming HHTp requests which is essential for processing data sent from the client
+}));  
+const port = 5000
 
-const port = 5000 // set the port, specify where the server will listen for incoming requests.
-
-const connection = mysql.createConnection({ // establish a connection to the MySQL, ensuring that our server can interact with the db
+const connection = mysql.createConnection({ 
     host: "localhost",
     user: "root",
     password: "sec382mSL",
@@ -105,14 +102,11 @@ app.delete('/api/delete/:id', (req, res) => {
 });
 
 app.put('/api/update/:id', (req, res) => {
-    const dataId = req.params.id; // URL'den gelen ":id" parametresini al
-    const { plate, entry_date, entry_time, entry_weight, exit_date, exit_time, exit_weight } = req.body; // PUT isteği ile gönderilen verileri al
-    // Veritabanında kullanıcıyı ID'ye göre güncelleyen SQL sorgusu
-
+    const dataId = req.params.id; 
+    const { plate, entry_date, entry_time, entry_weight, exit_date, exit_time, exit_weight } = req.body; 
     const sql = 'UPDATE weight_track SET plate = ?, entry_date = ?, entry_time = ?, entry_weight = ?, exit_date = ?, exit_time = ?, exit_weight = ? WHERE id = ?';
     const values = [plate, entry_date, entry_time, entry_weight, exit_date, exit_time, exit_weight, dataId];
 
-    // Veritabanı sorgusunu yürütme
     connection.query(sql, values, (err, result) => {
         if (err) {
             console.error('Veri güncellenirken hata oluştu:', err);
@@ -129,8 +123,6 @@ app.put('/api/update/:id', (req, res) => {
 });
 
 
-
-
 app.listen(port, () => {
     console.log('listening')
-})  // start the server, making it ready to respond to incomşng requests and serve as the backbone for our full-stack app
+})

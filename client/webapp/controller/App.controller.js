@@ -25,27 +25,6 @@ sap.ui.define([
             sap.ui.getCore().setModel(oModel, "getAllData");
         },
 
-        onTableItemPress: function (oEvent) {
-            var oSelectedItem = oEvent.getParameter("listItem");
-            if (oSelectedItem) {
-                var oContext = oSelectedItem.getBindingContext("getAllData");
-                this.selectedItem = oContext;
-                if (oContext) {
-                    var sItemId = oContext.getProperty("id");
-                    if (sItemId) {
-                        this.selectedItemId = sItemId;
-                        console.log("Seçilen ID: " + sItemId);
-                    } else {
-                        console.error("ID bulunamadı.");
-                    }
-                } else {
-                    console.error("Bağlam bulunamadı veya geçersiz.");
-                }
-            } else {
-                console.error("Seçilen öğe bulunamadı veya geçersiz.");
-            }
-        },
-
         onDeleteData: function () {
             var that = this;
             if (this.selectedItemId) {
@@ -73,7 +52,7 @@ sap.ui.define([
                     }
                 });
                 dialog.open();
-            } else { alert("Silinecek veri seçiniz."); }
+            } else { MessageBox.error("Silinecek veriyi seçiniz."); }
         },
 
         onConfirmDelete: function () {
@@ -105,25 +84,25 @@ sap.ui.define([
                         layout: "ResponsiveGridLayout",
                         content: [
                             new Label({ text: "Plaka" }),
-                            new Input({ id: "plateInput" }),
+                            new Input({ id: "plateInput", required: true }),
 
                             new Label({ text: "Giriş Tarihi" }),
-                            new DatePicker({ id: "entryDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
+                            new DatePicker({ id: "entryDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd", required: true }),
 
                             new Label({ text: "Giriş Saati" }),
-                            new TimePicker({ id: "entryTimeInput", displayFormat: "HH:mm" }),
+                            new TimePicker({ id: "entryTimeInput", displayFormat: "HH:mm", required: true }),
 
                             new Label({ text: "Giriş Ağırlığı (kg)" }),
-                            new Input({ id: "entryWeightInput" }),
+                            new Input({ id: "entryWeightInput", required: true }),
 
                             new Label({ text: "Çıkış Tarihi" }),
-                            new DatePicker({ id: "exitDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd" }),
+                            new DatePicker({ id: "exitDateInput", displayFormat: "dd.MM.yyyy", valueFormat: "yyyy-MM-dd", required: true }),
 
                             new Label({ text: "Çıkış Saati" }),
-                            new TimePicker({ id: "exitTimeInput", displayFormat: "HH:mm" }),
+                            new TimePicker({ id: "exitTimeInput", displayFormat: "HH:mm", required: true }),
 
                             new Label({ text: "Çıkış Ağırlığı (kg)" }),
-                            new Input({ id: "exitWeightInput" }),
+                            new Input({ id: "exitWeightInput", required: true }),
                         ]
                     })
                 ],
@@ -146,18 +125,23 @@ sap.ui.define([
                             return;
                         }
 
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('POST', 'http://localhost:5000/api/addData');
-                        xhr.setRequestHeader('Content-Type', 'application/json');
-                        xhr.onload = function () {
-                            if (xhr.status === 200) {
-                                console.log('Veri başarıyla eklendi:', xhr.responseText);
-                                that.onLoadData();
-                            } else {
-                                console.error('Veri eklenirken hata oluştu:', xhr.statusText);
-                            }
-                        };
-                        xhr.send(JSON.stringify(postData));
+                        fetch('http://localhost:5000/api/addData', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(postData)
+                        })
+                            .then(function (response) {
+                                if (response.ok) {
+                                    that.onLoadData();
+                                } else {
+                                    console.error('Veri eklenirken hata oluştu:', response.statusText);
+                                }
+                            })
+                            .catch(function (error) {
+                                console.error('İstek sırasında hata oluştu:', error);
+                            });
 
                         oDialog.close();
                         oDialog.destroy();
@@ -260,12 +244,29 @@ sap.ui.define([
                     })
                 });
                 oDialog.open();
-
-            }
-
+            } else { MessageBox.error("Güncellenecek veriyi seçiniz."); }
         },
 
-
+        onTableItemPress: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("listItem");
+            if (oSelectedItem) {
+                var oContext = oSelectedItem.getBindingContext("getAllData");
+                this.selectedItem = oContext;
+                if (oContext) {
+                    var sItemId = oContext.getProperty("id");
+                    if (sItemId) {
+                        this.selectedItemId = sItemId;
+                        console.log("Seçilen ID: " + sItemId);
+                    } else {
+                        console.error("ID bulunamadı.");
+                    }
+                } else {
+                    console.error("Bağlam bulunamadı veya geçersiz.");
+                }
+            } else {
+                console.error("Seçilen öğe bulunamadı veya geçersiz.");
+            }
+        },
 
         formatDate: function (date) {
             var dateFormat = DateFormat.getDateInstance({
@@ -274,16 +275,6 @@ sap.ui.define([
             var dateObject = new Date(date);
             var formattedDate = dateFormat.format(dateObject);
             return formattedDate;
-        },
-
-        formatTime: function (time) {
-            var timeFormat = DateFormat.getTimeInstance({
-                pattern: "HH:mm"
-            });
-            var timeObject = new time(time);
-            var formattedTime = timeFormat.format(timeObject);
-            return formattedTime;
-
         }
     });
 });

@@ -8,7 +8,7 @@
         <Page title="{i18n>homePageTitle}">
             <content>
                 <FlexBox width="100%" height="100%" justifyContent="Start" alignItems="Start" direction="Row">
-                    <Panel headerText="Veriler" width="95%" class="sapUiResponsiveMargin">
+                    <Panel headerText="{i18n>panel1Title}" width="95%" class="sapUiResponsiveMargin">
                         <content>
                             <Table id="myTable" items="{getAllData>/}" itemPress=".onTableItemPress" growing="true" growingThreshold="8">
                                 <columns>
@@ -51,12 +51,12 @@
                         </content>
                     </Panel>
 
-                    <Panel headerText="Seçenekler" width="70%" class="sapUiResponsiveMargin">
+                    <Panel headerText="{i18n>panel2Title}" width="70%" class="sapUiResponsiveMargin">
                         <content>
                             <VBox justifyContent="Center" alignItems="Center">
-                                <Button text="Ekle" press=".onAddData" width="150px" class="myButton"/>
-                                <Button text="Sil" press=".onDeleteData" width="150px"/>
-                                <Button text="Güncelle" press=".onUpdateData" width="150px"/>
+                                <Button text="{i18n>btnAdd}" press=".onAddData" width="150px" class="myButton"/>
+                                <Button text="{i18n>btnDelete}" press=".onDeleteData" width="150px"/>
+                                <Button text="{i18n>btnUpdate}" press=".onUpdateData" width="150px"/>
                             </VBox>
                         </content>
                     </Panel>

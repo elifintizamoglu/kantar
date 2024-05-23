@@ -1,8 +1,9 @@
 const express = require('express')
 const mysql = require('mysql')
 const cors = require('cors')
-const path = require('path')
 const bodyParser = require('body-parser')
+const { sequelize } = require('./models')
+const authRoutes = require('./auth')
 
 const app = express() 
 app.use(bodyParser.json());
@@ -10,6 +11,8 @@ app.use(cors({
     origin: 'http://localhost:8080'
 }));  
 const port = 5000
+
+app.use('/auth', authRoutes);
 
 const connection = mysql.createConnection({ 
     host: "localhost",
@@ -24,8 +27,6 @@ connection.connect(err => {
     }
     console.log('Veritabanina başariyla bağlandi.');
 });
-
-
 
 app.post('/api/addData', (req, res) => {
 
@@ -123,6 +124,7 @@ app.put('/api/update/:id', (req, res) => {
 });
 
 
-app.listen(port, () => {
-    console.log('listening')
+app.listen(port, async() => {
+    console.log('listening');
+    await sequelize.sync();
 })

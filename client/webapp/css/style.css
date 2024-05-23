@@ -1,3 +1,8 @@
-.myButton {
-    color: aqua;
+.custom {
+    background-color: rgba(0, 0, 255, 0.5); /* Sayfanın arka plan rengini ayarlayın. Bu örnekte mavi ve biraz şeffaf */
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

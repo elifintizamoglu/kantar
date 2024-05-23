@@ -1,0 +1,32 @@
+<mvc:View
+    controllerName="sap.ui.demo.client.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <App class="app">
+        <pages>
+            <Page title="{i18n>homePageTitle}" class="custom">
+                <content>
+                    <VBox justifyContent="Center" alignItems="Center" width="100%" height="100%">
+                        <HBox justifyContent="Center" alignItems="Center">
+                            <VBox width="300px">
+                                <Input id="username" placeholder="Username">
+                                    <layoutData>
+                                        <FlexItemData styleClass="sapUiSmallMarginBottom"/>
+                                    </layoutData>
+                                </Input>
+                                <Input id="password" type="Password" placeholder="Password">
+                                    <layoutData>
+                                        <FlexItemData styleClass="sapUiSmallMarginBottom"/>
+                                    </layoutData>
+                                </Input>
+                                <HBox justifyContent="Center" width="100%">
+                                    <Button text="Login" press="onLogin"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </content>
+            </Page>
+        </pages>
+    </App>
+</mvc:View>

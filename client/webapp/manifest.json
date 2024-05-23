@@ -1,52 +1,87 @@
 {
+  "_version": "1.1.0",
+  "sap.app": {
     "_version": "1.1.0",
-    "sap.app": {
-      "_version": "1.1.0",
-      "id": "sap.ui.demo.wt",
-      "type": "application",
-      "i18n": "i18n/i18n.properties",
-      "title": "{{appTitle}}",
-      "description": "{{appDescription}}",
-      "applicationVersion": {
-        "version": "1.0.0"
-      },
-      "ach": "CA-UI5-DOC"
+    "id": "sap.ui.demo.wt",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "1.0.0"
     },
-    "sap.ui": {
-      "_version": "1.1.0",
-      "technology": "UI5",
-      "deviceTypes": {
-        "desktop": true,
-        "tablet": true,
-        "phone": true
-      },
-      "supportedThemes": [
-        "sap_bluecrystal"
+    "ach": "CA-UI5-DOC"
+  },
+  "sap.ui": {
+    "_version": "1.1.0",
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "_version": "1.1.0",
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
       ]
     },
-    "sap.ui5": {
-      "_version": "1.1.0",
-      "resources":{
-        "css": [
-          {
-            "uri":"css/style.css"
-          }
-        ]
-      },
-      "rootView": "sap.ui.demo.wt.view.App",
-      "dependencies": {
-        "minUI5Version": "1.30",
-        "libs": {
-          "sap.m": {}
+    "rootView": {
+      "viewName": "sap.ui.demo.client.view.App",
+      "type": "XML",
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.30",
+      "libs": {
+        "sap.m": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "sap.ui.demo.wt.i18n.i18n"
+        }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "sap.ui.demo.client.view",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "transition": "slide",
+        "bypassed": {
+          "target": "login"
         }
       },
-      "models": {
-        "i18n": {
-          "type": "sap.ui.model.resource.ResourceModel",
-          "settings": {
-            "bundleName": "sap.ui.demo.wt.i18n.i18n"
-          }
+      "routes": [
+        {
+          "pattern": "",
+          "name": "login",
+          "target": "login"
+        },
+        {
+          "pattern": "home",
+          "name": "home",
+          "target": "home"
+        }
+      ],
+      "targets": {
+        "login": {
+          "viewName": "Login"
+        },
+        "home": {
+          "viewName": "sap.ui.demo.client.view.App",
+          "viewType": "XML"
         }
       }
     }
   }
+}

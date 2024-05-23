@@ -1,8 +1,9 @@
 sap.ui.require([
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/mvc/XMLView",
-    "sap/ui/model/resource/ResourceModel"
-], function (JSONModel, XMLView, ResourceModel) {
+    "sap/ui/model/resource/ResourceModel",
+    "sap/ui/core/UIComponent"
+], function (JSONModel, XMLView, ResourceModel, UIComponent) {
     "use strict"
 
     sap.ui.getCore().attachInit(function () {
@@ -11,18 +12,16 @@ sap.ui.require([
             bundleName: "sap.ui.demo.client.i18n.i18n",
             supportedLocales: [""],
             fallbackLocale: ""
-        })
+        });
         sap.ui.getCore().setModel(oResourceModel, "i18n");
 
-
         XMLView.create({
-            viewName: "sap.ui.demo.client.view.App"
+            viewName: "sap.ui.demo.client.view.Login"
         }).then(function (oView) {
             oView.placeAt("content");
 
             var oController = oView.getController();
-            oController.onLoadData();
+            //oController.onLoadData();
         });
-
-    })
-})
+    });
+});

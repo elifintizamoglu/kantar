@@ -65,3 +65,70 @@
         </Page>
     </App>
 </mvc:View>
+
+
+<!-- <mvc:View controllerName="sap.ui.demo.client.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
+    <App class="app">
+        <pages>
+            <Page class="customPage" backgroundDesign="Transparent">
+                <content>
+
+                    <form:SimpleForm>
+                        <form:content>
+                            <Text class="formTitle" text="Login"/>
+                            <Input id="username" placeholder="Enter your username" required="true"/>
+                            <Input id="password" placeholder="Enter your password" type="Password" required="true"/>
+                            <Link text="Forgot password?" href="#" class="forgotLink"/>
+                            <Button text="Log In" press="onLogin"/>
+                            <HBox class="register" justifyContent="Center">
+                                <Text text="Don't have an account?"/>
+                                <Link text="Register" href="#" class="registerLink"/>
+                            </HBox>
+                        </form:content>
+                    </form:SimpleForm>
+
+                </content>
+            </Page>
+        </pages>
+    </App>
+</mvc:View> -->
+
+
+
+
+
+<!-- 
+<mvc:View controllerName="sap.ui.demo.client.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <App class="app">
+        <Page class="customPage" title="{i18n>homePageTitle}" justifyContent="Center">
+            <content>
+                <VBox alignItems="Center" justifyContent="Center">
+                    <Panel headerText="Login" class="sapUiResponsiveMargin">
+                        <VBox>
+
+                            <VBox class="input-field">
+                                <Label text="Enter your email" />
+                                <Input type="Text" required="true" />
+                            </VBox>
+                            <VBox class="input-field">
+                                <Label text="Enter your password" />
+                                <Input type="Password" required="true" />
+                            </VBox>
+                            <Button text="Log In" type="Emphasized" press="onLogin" />
+                            <HBox justifyContent="Center" class="register">
+                                <Text text="Don't have an account?" />
+                                <Link text="Register" press="onRegister" />
+                            </HBox>
+                        </VBox>
+                    </Panel>
+                </VBox>
+            </content>
+        </Page>
+    </App>
+</mvc:View> -->

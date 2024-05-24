@@ -1,30 +1,25 @@
-<mvc:View
-    controllerName="sap.ui.demo.client.controller.Login"
+<mvc:View controllerName="sap.ui.demo.client.controller.Login"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
     <App class="app">
         <pages>
-            <Page title="{i18n>homePageTitle}" class="custom">
+            <Page class="customPage" backgroundDesign="Transparent" title="{i18n>loginPageTitle}">
                 <content>
-                    <VBox justifyContent="Center" alignItems="Center" width="100%" height="100%">
-                        <HBox justifyContent="Center" alignItems="Center">
-                            <VBox width="300px">
-                                <Input id="username" placeholder="Username">
-                                    <layoutData>
-                                        <FlexItemData styleClass="sapUiSmallMarginBottom"/>
-                                    </layoutData>
-                                </Input>
-                                <Input id="password" type="Password" placeholder="Password">
-                                    <layoutData>
-                                        <FlexItemData styleClass="sapUiSmallMarginBottom"/>
-                                    </layoutData>
-                                </Input>
-                                <HBox justifyContent="Center" width="100%">
-                                    <Button text="Login" press="onLogin"/>
-                                </HBox>
-                            </VBox>
-                        </HBox>
-                    </VBox>
+                    <form:SimpleForm>
+                        <form:content >
+                            <Label text="Kullanıcı Adı" />
+                            <Input id="username"  required="true"/>
+                            <Label text="Şifre" />
+                            <Input id="password" type="Password" required="true"/>
+                            <Link text="Şifremi Unuttum" href="#"/>
+                            <Button text="Giriş Yap" press="onLogin"/>
+                            <HBox class="register" justifyContent="Center">
+                                <Text text="Hesabınız yoksa "/>
+                                <Link text="Kayıt Olun" href="#"/>
+                            </HBox>
+                        </form:content>
+                    </form:SimpleForm>
                 </content>
             </Page>
         </pages>
